@@ -2,7 +2,6 @@ import com.yudistiro.weather.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
 
 
 class AndroidDaggerConventionPlugin: Plugin<Project> {
@@ -17,6 +16,7 @@ class AndroidDaggerConventionPlugin: Plugin<Project> {
                add( "implementation",(libs.findLibrary("dagger.core").get()))
                add( "kapt",(libs.findLibrary("dagger.compiler").get()))
                add("implementation",(libs.findLibrary("dagger.android").get()))
+                add("implementation",(libs.findLibrary("dagger.android.support").get()))
                add("kapt",(libs.findLibrary("dagger.android.compiler").get()))
             }
 

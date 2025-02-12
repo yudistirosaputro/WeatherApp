@@ -1,5 +1,6 @@
 plugins {
     id("weather.android.application")
+    id("weather.android.dagger")
 }
 
 android {
@@ -7,7 +8,7 @@ android {
     buildTypes {
         release {
 
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

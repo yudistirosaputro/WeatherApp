@@ -9,5 +9,5 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(libs.coroutines.android)
-    implementation(libs.bundles.network)
+    api(libs.bundles.network)
 }

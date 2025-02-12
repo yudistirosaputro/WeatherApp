@@ -1,4 +1,10 @@
 package com.yudistiro.weather
 
-class WeatherApp {
+import android.app.Application
+
+class WeatherApp  : Application() {
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(applicationContext)
+    }
 }
+
