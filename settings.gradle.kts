@@ -22,9 +22,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Weather"
 include(":app")
-//include(":core:data")
-//include(":core:network")
-//include(":core:local")
+include(":core:data")
+include(":core:network")
+include(":core:local")
 include(":core:common")
-//include(":domain")
-//include(":feature:home")
+include(":domain")
+include(":feature:home")

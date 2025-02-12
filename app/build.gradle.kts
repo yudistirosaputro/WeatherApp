@@ -19,13 +19,13 @@ android {
 
 dependencies {
 
-    //module
-//    implementation(project(":core:network"))
-//    implementation(project(":core:local"))
-//    implementation(project(":core:data"))
+//    module
+    implementation(project(":core:network"))
+    implementation(project(":core:local"))
+    implementation(project(":core:data"))
     implementation(project(":core:common"))
-//    implementation(project(":domain"))
-//    implementation(project(":feature:home"))
+    implementation(project(":domain"))
+    implementation(project(":feature:home"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
