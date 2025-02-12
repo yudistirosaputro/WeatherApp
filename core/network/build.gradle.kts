@@ -3,10 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.yudis.weather.data"
+    namespace = "com.yudis.network"
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(libs.coroutines.android)
     implementation(libs.bundles.network)
 }
