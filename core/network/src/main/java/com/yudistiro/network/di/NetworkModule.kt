@@ -10,19 +10,19 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 class NetworkModule {
     @Singleton
     @Provides
-    @Named("BaseUrl")
+    @BaseInterceptor
     fun provideBaseUrl(): String = BuildConfig.BASE_URL
 
     @Singleton
     @Provides
-    @Named("GeoCodeUrl")
+    @GeoCodeInterceptor
     fun provideGeoCodeBaseUrl(): String = BuildConfig.BASE_URL_GEO_CODE
 
     @Singleton
@@ -44,7 +44,7 @@ class NetworkModule {
     @Provides
     fun provideRetrofitForMainApi(
         okHttpClient: OkHttpClient,
-        @Named("BaseUrl") baseUrl: String
+        @BaseInterceptor baseUrl: String
     ): Retrofit {
         return createRetrofit(baseUrl, okHttpClient)
     }
@@ -53,7 +53,7 @@ class NetworkModule {
     @Provides
     fun provideRetrofitForGeoCodeApi(
         okHttpClient: OkHttpClient,
-        @Named("GeoCodeUrl") geoCodeBaseUrl: String
+        @GeoCodeInterceptor geoCodeBaseUrl: String
     ): Retrofit {
         return createRetrofit(geoCodeBaseUrl, okHttpClient)
     }
@@ -70,7 +70,7 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideWeatherApi(
-        @Named("BaseUrl") retrofit: Retrofit
+        @BaseInterceptor retrofit: Retrofit
     ): WeatherApi {
         return retrofit.create(WeatherApi::class.java)
     }
@@ -78,8 +78,16 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideGeoCodeApi(
-        @Named("GeoCodeUrl") retrofit: Retrofit
+        @GeoCodeInterceptor retrofit: Retrofit
     ): GeocodeApi {
         return retrofit.create(GeocodeApi::class.java)
     }
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class GeoCodeInterceptor
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class BaseInterceptor
 }
