@@ -1,10 +1,11 @@
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.yudistiro.convention.configureKotlinAndroid
-import com.yudistiro.convention.libs
+import com.yudistiro.weather.configureKotlinAndroid
+import com.yudistiro.weather.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -13,6 +14,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
                 apply("androidx.navigation.safeargs")
+                apply("weather.android.dagger")
             }
 
             extensions.configure<ApplicationExtension> {
@@ -28,7 +30,9 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 }
 
             }
-
+            dependencies {
+                add("testImplementation", libs.findBundle("mockk").get())
+            }
         }
     }
 

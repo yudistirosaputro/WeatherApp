@@ -1,8 +1,7 @@
-package com.yudistiro
-
-import com.android.build.gradle.LibraryExtension
-import com.yudistiro.convention.configureKotlinAndroid
-import com.yudistiro.convention.libs
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.yudistiro.weather.configureKotlinAndroid
+import com.yudistiro.weather.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -22,24 +21,24 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
+                apply("weather.android.dagger")
             }
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-
                 defaultConfig.apply {
-                    targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
                     buildConfigField("String", "BASE_URL", customProperties.getProperty("BASE_URL"))
                     buildConfigField("String", "BASE_URL_GEO_CODE", customProperties.getProperty("BASE_URL_GEO_CODE"))
                     buildConfigField("String", "API_KEY", customProperties.getProperty("API_KEY"))
 
                 }
                 buildFeatures.buildConfig = true
+                dependencies {
+                    add("testImplementation", kotlin("test"))
+                    add("testImplementation", libs.findBundle("mockk").get())
+                }
             }
-            dependencies {
-                add("testImplementation", kotlin("test"))
-                add("testImplementation", libs.findBundle("mockk").get())
-            }
+
 
         }
     }

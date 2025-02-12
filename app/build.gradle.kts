@@ -1,42 +1,31 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("weather.android.application")
 }
 
 android {
     namespace = "com.yudistiro.weather"
-    compileSdk = 34
-
-    defaultConfig {
-        applicationId = "com.yudistiro.weather"
-        minSdk = 29
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
 }
 
 dependencies {
 
+    //module
+//    implementation(project(":core:network"))
+//    implementation(project(":core:local"))
+//    implementation(project(":core:data"))
+    implementation(project(":core:common"))
+//    implementation(project(":domain"))
+//    implementation(project(":feature:home"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

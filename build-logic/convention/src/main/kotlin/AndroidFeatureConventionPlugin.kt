@@ -1,6 +1,4 @@
-package com.yudistiro
-
-import com.yudistiro.convention.libs
+import com.yudistiro.weather.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -11,7 +9,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("weather.android.library")
-                apply("weather.android.hilt")
                 apply("org.jetbrains.kotlin.kapt")
                 apply("androidx.navigation.safeargs")
             }

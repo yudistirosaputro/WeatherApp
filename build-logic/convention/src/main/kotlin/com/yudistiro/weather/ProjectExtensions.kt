@@ -1,4 +1,4 @@
-package com.yudistiro.convention
+package com.yudistiro.weather
 
 
 import org.gradle.api.Project
