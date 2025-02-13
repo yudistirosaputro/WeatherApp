@@ -2,14 +2,14 @@ plugins {
     id("weather.android.feature")
 }
 android {
-    namespace = "com.yudistiro.weather.feature.home"
+    namespace = "com.yudistiro.weather.feature.favorite"
     buildFeatures.dataBinding = true
 }
 
 dependencies {
 
-    implementation(project(":core:common"))
     implementation(project(":uikit"))
+    implementation(project(":core:common"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

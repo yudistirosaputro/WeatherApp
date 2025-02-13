@@ -11,6 +11,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("weather.android.library")
                 apply("org.jetbrains.kotlin.kapt")
                 apply("androidx.navigation.safeargs")
+                apply("org.jetbrains.kotlin.android")
             }
 
 
