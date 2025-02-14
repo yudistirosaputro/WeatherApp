@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,11 +18,33 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
+    @Provides
+    @Singleton
+    @ApiKey
+    fun provideTokenInterceptor() : Interceptor {
+        return  Interceptor {  chain ->
+            val originalRequest = chain.request()
+            val url = originalRequest.url.newBuilder()
+                .addQueryParameter("appid", BuildConfig.API_KEY)
+                .build()
+
+            val modifiedRequest = originalRequest.newBuilder()
+                .url(url)
+                .build()
+
+            chain.proceed(modifiedRequest)
+        }
+
+    }
 
     @Provides
     fun provideOkHttpClient(
+        @ApiKey apiKeyInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(
+            apiKeyInterceptor
+            )
             .addInterceptor(
                 HttpLoggingInterceptor()
                     .apply {
@@ -83,6 +106,7 @@ class NetworkModule {
         return retrofit.create(WeatherApi::class.java)
     }
 
+
     @Singleton
     @Provides
     fun provideGeoCodeApi(
@@ -98,4 +122,8 @@ class NetworkModule {
     @Qualifier
     @Retention(AnnotationRetention.BINARY)
     annotation class BaseInterceptor
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class ApiKey
 }
