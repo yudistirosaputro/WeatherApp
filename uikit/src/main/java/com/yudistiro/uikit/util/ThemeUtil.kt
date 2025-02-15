@@ -6,9 +6,10 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
-import com.yudistiro.uikit.model.WeatherCondition
+import com.yudistiro.common.model.WeatherCondition
 
 object ThemeUtils {
+    private var weatherCondition = WeatherCondition.SUNNY
     fun setTransparentStatusBar(window: Window) {
         window.apply {
             setFlags(
@@ -54,5 +55,8 @@ object ThemeUtils {
 
     fun getCurrentWeatherCondition(): WeatherCondition {
         return WeatherCondition.SUNNY
+    }
+    fun setCurrentWeatherCondition(condition: WeatherCondition) {
+        weatherCondition = condition
     }
 }

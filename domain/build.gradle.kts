@@ -10,5 +10,6 @@ android {
 dependencies {
 
     implementation(libs.coroutines.android)
+    implementation(project(":core:common"))
     testImplementation(libs.coroutines.test)
 }

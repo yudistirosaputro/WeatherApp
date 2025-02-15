@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.yudistiro.common.model.WeatherCondition
 import com.yudistiro.uikit.model.HourlyForecast
-import com.yudistiro.uikit.model.WeatherCondition
 import com.yudistiro.weather.uikit.R as uikit
 import com.yudistiro.weather.feature.home.R
 import java.text.SimpleDateFormat
@@ -40,8 +40,8 @@ class HourlyForecastAdapter : ListAdapter<HourlyForecast, HourlyForecastAdapter.
             // Set weather icon based on condition
             val iconResource = when (forecast.weatherCondition) {
                 WeatherCondition.SUNNY -> uikit.drawable.ic_sun
-                WeatherCondition.CLOUDY -> uikit.drawable.ic_cloudy
-                WeatherCondition.RAINY -> uikit.drawable.ic_rainy
+                WeatherCondition.CLOUDS -> uikit.drawable.ic_cloudy
+                WeatherCondition.RAIN -> uikit.drawable.ic_rainy
                 else -> uikit.drawable.ic_sun
             }
             weatherIcon.setImageResource(iconResource)

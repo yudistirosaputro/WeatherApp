@@ -51,13 +51,13 @@
             app:layout_constraintTop_toBottomOf="@id/locationIcon" />
 
         <TextView
-            android:id="@+id/temperature"
+            android:id="@+id/temperatureText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:text="16°"
             android:textColor="@color/white"
-            android:textSize="120sp"
+            android:textSize="80sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dateTime" />
@@ -68,8 +68,8 @@
             android:layout_height="62dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/ic_sun"
-            app:layout_constraintStart_toEndOf="@id/temperature"
-            app:layout_constraintTop_toTopOf="@id/temperature" />
+            app:layout_constraintStart_toEndOf="@id/temperatureText"
+            app:layout_constraintTop_toTopOf="@id/temperatureText" />
 
         <!-- Weather Info Card -->
         <androidx.cardview.widget.CardView

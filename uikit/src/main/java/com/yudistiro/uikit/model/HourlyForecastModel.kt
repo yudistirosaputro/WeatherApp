@@ -1,5 +1,6 @@
 package com.yudistiro.uikit.model
 
+import com.yudistiro.common.model.WeatherCondition
 import java.util.Date
 
 data class HourlyForecast(
@@ -8,9 +9,3 @@ data class HourlyForecast(
     val weatherCondition: WeatherCondition
 )
 
-enum class WeatherCondition {
-    SUNNY,
-    CLOUDY,
-    RAINY,
-    PARTLY_CLOUDY
-}

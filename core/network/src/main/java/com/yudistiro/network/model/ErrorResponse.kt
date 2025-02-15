@@ -1,9 +1,11 @@
 package com.yudistiro.network.model
 
+import com.google.gson.annotations.SerializedName
+
 data class ErrorResponse(
-    @SerialName("status_message")
+    @SerializedName("status_message", alternate =[ "message"])
     var statusMessage: String?,
-    @SerialName("status_code")
+    @SerializedName("status_code", alternate =[ "cod"])
     var statusCode: Int? = null,
 )
 

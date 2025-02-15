@@ -1,10 +1,10 @@
 package com.yudistiro.weather
 
 import android.content.Context
-import com.yudistiro.local.CountriesDao
+import com.yudistiro.data.di.DataModule
+import com.yudistiro.di.HomeComponent
+import com.yudistiro.domain.di.DomainModule
 import com.yudistiro.local.di.LocalModule
-import com.yudistiro.network.api.GeocodeApi
-import com.yudistiro.network.api.WeatherApi
 import com.yudistiro.network.di.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
@@ -15,14 +15,14 @@ import javax.inject.Singleton
     modules = [
         NetworkModule::class,
         LocalModule::class,
+        DataModule::class,
+        DomainModule::class,
+        SubcomponentsModule::class
     ]
 )
 interface AppComponent {
-
     fun inject(activity: MainActivity)
-    fun weatherApi(): WeatherApi
-    fun geoCodeApi(): GeocodeApi
-    fun weatherDao(): CountriesDao
+    fun homeComponent() : HomeComponent.Factory
 
     @Component.Factory
     interface Factory {

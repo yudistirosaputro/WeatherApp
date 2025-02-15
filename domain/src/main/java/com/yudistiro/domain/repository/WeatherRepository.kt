@@ -1,5 +1,6 @@
 package com.yudistiro.domain.repository
 
+import com.yudistiro.domain.model.CurrentWeather
 import com.yudistiro.domain.model.DomainResource
 import kotlinx.coroutines.flow.Flow
 

@@ -10,5 +10,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:local"))
     implementation(project(":domain"))
+    implementation(project(":core:common"))
     implementation(libs.coroutines.android)
 }
