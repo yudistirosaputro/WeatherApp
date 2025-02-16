@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="London, UK"
+            tools:text="London, UK"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/locationIcon"
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Today, Oct 18 5:10"
+            tools:text="Today, Oct 18 5:10"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
-            android:text="16°"
+            tools:text="16°"
             android:textColor="@color/white"
             android:textSize="80sp"
             android:textStyle="bold"
@@ -89,24 +89,25 @@
                 android:padding="16dp">
 
                 <!-- Time Section -->
+
                 <ImageView
                     android:id="@+id/timeIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginStart="16dp"
                     android:src="@drawable/ic_sun"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/timeValue"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/timeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="23:00"
+                    tools:text="23:00"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toEndOf="@id/timeIcon"
+                    android:layout_marginEnd="34dp"
+                    app:layout_constraintEnd_toStartOf="@+id/view1"
                     app:layout_constraintTop_toTopOf="@+id/timeIcon" />
 
                 <TextView
@@ -114,9 +115,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="Slight chance\nof rain"
+                    tools:text="Slight chance\nof rain"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="@id/timeIcon"
                     app:layout_constraintEnd_toEndOf="@id/timeValue"
@@ -127,9 +128,9 @@
                     android:layout_height="match_parent"
                     android:id="@+id/view1"
                     android:background="@color/white"
-                    android:layout_marginStart="24dp"
                     app:layout_constraintTop_toTopOf="@+id/timeIcon"
-                    app:layout_constraintStart_toEndOf="@+id/timeDescription"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="@+id/timeDescription" />
 
                 <!-- Wind Section -->
@@ -146,7 +147,7 @@
                     android:id="@+id/windValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="14km/h"
+                    tools:text="14km/h"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
@@ -157,56 +158,14 @@
                     android:id="@+id/windDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Slight chance\nof rain"
+                    tools:text="Slight chance\nof rain"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="@id/windIcon"
                     app:layout_constraintTop_toBottomOf="@id/windValue" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/view2"
-                    android:background="@color/white"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintTop_toTopOf="@+id/windIcon"
-                    app:layout_constraintStart_toEndOf="@+id/windDescription"
-                    app:layout_constraintBottom_toBottomOf="@+id/windDescription" />
-
-                <!-- UV Section -->
-                <ImageView
-                    android:id="@+id/uvIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="24dp"
-                    android:src="@drawable/ic_uv"
-                    app:layout_constraintStart_toEndOf="@+id/view2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/uvValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UV"
-                    android:layout_marginStart="6dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/uvIcon" />
-
-                <TextView
-                    android:id="@+id/uvDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Slight chance \n of rain"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@id/uvValue"
-                    app:layout_constraintEnd_toEndOf="@id/uvValue"
-                    app:layout_constraintTop_toBottomOf="@id/uvValue" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -231,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Hourly Forecast"
+                    android:text="3-hourly forecast"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"

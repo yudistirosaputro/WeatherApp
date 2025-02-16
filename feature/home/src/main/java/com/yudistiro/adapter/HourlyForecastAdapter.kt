@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yudistiro.common.model.WeatherCondition
-import com.yudistiro.uikit.model.HourlyForecast
+import com.yudistiro.domain.model.ForeCastModel
 import com.yudistiro.weather.uikit.R as uikit
 import com.yudistiro.weather.feature.home.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HourlyForecastAdapter : ListAdapter<HourlyForecast, HourlyForecastAdapter.ViewHolder>(DIFF_CALLBACK) {
+class HourlyForecastAdapter : ListAdapter<ForeCastModel, HourlyForecastAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -31,14 +31,13 @@ class HourlyForecastAdapter : ListAdapter<HourlyForecast, HourlyForecastAdapter.
         private val weatherIcon: ImageView = itemView.findViewById(R.id.weatherIcon)
         private val temperatureText: TextView = itemView.findViewById(R.id.temperatureText)
 
-        private val timeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
-        fun bind(forecast: HourlyForecast) {
-            timeText.text = timeFormatter.format(forecast.time)
+        fun bind(forecast: ForeCastModel) {
+            timeText.text = forecast.time
             temperatureText.text = "${forecast.temperature}°C"
 
             // Set weather icon based on condition
-            val iconResource = when (forecast.weatherCondition) {
+            val iconResource = when (forecast.condition) {
                 WeatherCondition.SUNNY -> uikit.drawable.ic_sun
                 WeatherCondition.CLOUDS -> uikit.drawable.ic_cloudy
                 WeatherCondition.RAIN -> uikit.drawable.ic_rainy
@@ -49,12 +48,12 @@ class HourlyForecastAdapter : ListAdapter<HourlyForecast, HourlyForecastAdapter.
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HourlyForecast>() {
-            override fun areItemsTheSame(oldItem: HourlyForecast, newItem: HourlyForecast): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ForeCastModel>() {
+            override fun areItemsTheSame(oldItem: ForeCastModel, newItem: ForeCastModel): Boolean {
                 return oldItem.time == newItem.time
             }
 
-            override fun areContentsTheSame(oldItem: HourlyForecast, newItem: HourlyForecast): Boolean {
+            override fun areContentsTheSame(oldItem: ForeCastModel, newItem: ForeCastModel): Boolean {
                 return oldItem == newItem
             }
         }

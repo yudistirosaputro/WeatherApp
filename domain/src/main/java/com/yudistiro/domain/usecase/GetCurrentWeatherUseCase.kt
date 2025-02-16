@@ -1,6 +1,6 @@
 package com.yudistiro.domain.usecase
 
-import com.yudistiro.domain.model.CurrentWeather
+import com.yudistiro.domain.model.CurrentWeatherModel
 import com.yudistiro.domain.model.DomainResource
 import com.yudistiro.domain.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,7 @@ class GetCurrentWeatherUseCase @Inject constructor(
     operator fun invoke(
         latitude: Double,
         longitude: Double
-    ): Flow<DomainResource<CurrentWeather>> {
+    ): Flow<DomainResource<CurrentWeatherModel>> {
         return weather.getCurrentWeather(
             latitude,
             longitude

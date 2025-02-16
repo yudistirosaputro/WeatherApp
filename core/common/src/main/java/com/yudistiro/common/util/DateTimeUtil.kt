@@ -1,36 +1,51 @@
 package com.yudistiro.common.util
 
 import com.yudistiro.common.model.DateInfo
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Locale
 
 class DateTimeUtils {
-    // Get Current Date Components
+    private val defaultFormat = "yyyy-MM-dd HH:mm:ss"
     fun getCurrentDateInfo(): DateInfo {
         val now = LocalDateTime.now()
         return DateInfo(
-            day = now.dayOfMonth,
-            monthShort = now.month.toString().take(3).capitalize(),
-            monthFull = now.month.toString().capitalize(),
+            day = now.format(DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm")),
             year = now.year,
             time = now.format(DateTimeFormatter.ofPattern("HH:mm:ss")),
             timeWithAmPm = now.format(DateTimeFormatter.ofPattern("hh:mm a"))
         )
     }
 
-    fun getDateInTimezone(zoneId: String): ZonedDateTime {
-        return ZonedDateTime.now(ZoneId.of(zoneId))
+    fun convertToHoursOnly(dateTimeString: String?): String {
+        if (dateTimeString.isNullOrBlank()) return EMPTY_STRING
+
+        return try {
+            val inputFormat = SimpleDateFormat(defaultFormat, Locale.getDefault())
+            val outputFormat = SimpleDateFormat("HH:00", Locale.getDefault())
+
+            val date = inputFormat.parse(dateTimeString)
+            date?.let { outputFormat.format(it) } ?: EMPTY_STRING
+        } catch (e: Exception) {
+            EMPTY_STRING
+        }
     }
 
-    fun formatDate(
-        pattern: String = "dd/MM/yyyy",
-        locale: Locale = Locale.getDefault()
-    ): String {
-        val formatter = DateTimeFormatter.ofPattern(pattern, locale)
-        return LocalDate.now().format(formatter)
+    fun isValidForecastTime(forecastDateTimeString: String): Boolean {
+        return try {
+            val inputFormat = SimpleDateFormat(defaultFormat, Locale.ENGLISH)
+            val forecastDate = inputFormat.parse(forecastDateTimeString)
+
+            val currentDateTime = Calendar.getInstance().time
+
+            forecastDate?.after(currentDateTime) ?: false
+        } catch (e: Exception) {
+            false
+        }
     }
-}
+    }

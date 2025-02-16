@@ -3,7 +3,6 @@ package com.yudistiro.weather
 import android.content.Context
 import com.yudistiro.data.di.DataModule
 import com.yudistiro.di.HomeComponent
-import com.yudistiro.domain.di.DomainModule
 import com.yudistiro.local.di.LocalModule
 import com.yudistiro.network.di.NetworkModule
 import dagger.BindsInstance
@@ -16,7 +15,6 @@ import javax.inject.Singleton
         NetworkModule::class,
         LocalModule::class,
         DataModule::class,
-        DomainModule::class,
         SubcomponentsModule::class
     ]
 )

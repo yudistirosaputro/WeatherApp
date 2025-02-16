@@ -5,7 +5,8 @@ import com.yudistiro.common.util.EMPTY_STRING
 import com.yudistiro.common.util.ZERO
 import com.yudistiro.common.util.ZERO_DOUBLE
 
-data class CurrentWeather (
+data class CurrentWeatherModel (
+    val id: Int = ZERO,
     val temperature: Double = ZERO_DOUBLE,
     val condition: WeatherCondition = WeatherCondition.SUNNY,
     val windSpeed: Double = ZERO_DOUBLE,

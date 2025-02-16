@@ -17,8 +17,7 @@ interface WeatherApi {
 
     @GET("forecast")
     suspend fun getForecast(
-        @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double,
-        @Query("id") apiKey: String
+        @Query("id") idWeather: Int,
+        @Query("units") units: String,
     ): NetworkResponse<ForecastWeatherResponse,ErrorResponse>
 }

@@ -1,10 +1,8 @@
 package com.yudistiro.di
 
-import com.yudistiro.domain.di.DomainModule
 import com.yudistiro.home.HomeFragment
-import dagger.Component
+import com.yudistiro.search.SearchFragment
 import dagger.Subcomponent
-import javax.inject.Singleton
 
 
 @Subcomponent(
@@ -18,4 +16,5 @@ interface HomeComponent {
         fun create(): HomeComponent
     }
     fun inject(homeFragment: HomeFragment)
+    fun inject(searchFragment: SearchFragment)
 }

@@ -16,9 +16,8 @@ import com.yudistiro.adapter.HourlyForecastAdapter
 import com.yudistiro.common.model.WeatherCondition
 import com.yudistiro.di.HomeComponentProvider
 import com.yudistiro.di.ViewModelFactory
-import com.yudistiro.domain.model.CurrentWeather
+import com.yudistiro.domain.model.CurrentWeatherModel
 import com.yudistiro.domain.model.DomainResource
-import com.yudistiro.uikit.model.HourlyForecast
 import com.yudistiro.uikit.util.ThemeUtils
 import com.yudistiro.uikit.util.ThemeUtils.lightenColor
 import com.yudistiro.uikit.util.ThemeUtils.setCurrentWeatherCondition
@@ -37,9 +36,9 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels {
         viewModelFactory
     }
-     private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var hourlyForecastAdapter: HourlyForecastAdapter
+    private  var hourlyForecastAdapter: HourlyForecastAdapter = HourlyForecastAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,24 +60,38 @@ class HomeFragment : Fragment() {
 
         homeViewModel.fetchWeather(44.34, 10.99)
 
-        homeViewModel.weatherState.observe(viewLifecycleOwner) {
-            when {
-                it is DomainResource.Success -> {
-                  setUpUIData(it.data)
-                }
-            }
+        binding.hourlyForecastRecyclerView.apply {
+            adapter = hourlyForecastAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
+        observeData()
         binding.searchButton.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
 
     }
 
-    private fun setUpUIData(currentWeather: CurrentWeather) {
+    private fun observeData() = with(homeViewModel) {
+        weatherState.observe(viewLifecycleOwner) {
+            when {
+                it is DomainResource.Success -> {
+                    setUpUIData(it.data)
+                }
+            }
+        }
+        forecastState.observe(viewLifecycleOwner) {
+            when {
+                it is DomainResource.Success -> {
+                    hourlyForecastAdapter.submitList(it.data)
+                }
+            }
+        }
+    }
+
+    private fun setUpUIData(currentWeather: CurrentWeatherModel) {
         setCurrentWeatherCondition(currentWeather.condition)
         setupWeatherUI(binding.clConstraint, requireContext())
-
-        hourlyForecastAdapter = HourlyForecastAdapter()
+        homeViewModel.getForecastById(currentWeather.id)
         binding.apply {
             locationText.text = currentWeather.locationName
             temperatureText.text = currentWeather.temperature.toString()
@@ -87,68 +100,7 @@ class HomeFragment : Fragment() {
             timeDescription.text = currentWeather.rainChance
             windValue.text = currentWeather.windSpeed.toString()
             windDescription.text = currentWeather.rainChance
-            uvValue.text = currentWeather.uvIndex.toString()
-            uvDescription.text = currentWeather.rainChance
-
-            hourlyForecastRecyclerView.apply {
-                adapter = hourlyForecastAdapter
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
         }
-    }
-
-    private fun loadHourlyForecast() {
-        // Example data
-        val forecasts = listOf(
-            HourlyForecast(
-                time = Date(), // Current time
-                temperature = 23,
-                weatherCondition = WeatherCondition.SUNNY
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.CLOUDS
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.RAIN
-            ),
-            HourlyForecast(
-                time = Date(), // Current time
-                temperature = 23,
-                weatherCondition = WeatherCondition.SUNNY
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.CLOUDS
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.RAIN
-            ),
-            HourlyForecast(
-                time = Date(), // Current time
-                temperature = 23,
-                weatherCondition = WeatherCondition.SUNNY
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.CLOUDS
-            ),
-            HourlyForecast(
-                time = Date(System.currentTimeMillis() + 3600000), // +1 hour
-                temperature = 23,
-                weatherCondition = WeatherCondition.RAIN
-            ),
-            // Add more forecast items...
-        )
-
-        hourlyForecastAdapter.submitList(forecasts)
     }
     private fun setupWeatherUI(layout : ConstraintLayout, context : Context,) {
         // Update status bar color based on weather condition
