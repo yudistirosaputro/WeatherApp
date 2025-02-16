@@ -35,7 +35,7 @@ class SearchResultsAdapter(
         fun bind(location: LocationModel) {
             binding.apply {
                 locationName.text = "${location.cityName } ${location.country}"
-                root.setOnClickListener {
+                selectLocation.setOnClickListener {
                     onItemClick(location)
                 }
                 favoriteIcon.setOnClickListener {

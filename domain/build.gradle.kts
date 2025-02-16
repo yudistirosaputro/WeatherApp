@@ -1,5 +1,6 @@
 plugins {
     id("weather.android.library")
+    id("kotlin-parcelize")
 }
 
 android {

@@ -11,11 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.yudistiro.common.model.WeatherCondition
 import com.yudistiro.di.HomeComponentProvider
 import com.yudistiro.di.ViewModelFactory
 import com.yudistiro.domain.model.DomainResource
+import com.yudistiro.domain.model.LocationModel
 import com.yudistiro.uikit.adapter.SearchResultsAdapter
 import com.yudistiro.uikit.util.ThemeUtils
 import com.yudistiro.uikit.util.ThemeUtils.lightenColor
@@ -59,16 +62,23 @@ class SearchFragment : Fragment() {
         setupWeatherUI(binding.clRoot, requireContext())
         searchAdapter = SearchResultsAdapter(
             onFavoriteClick = { result -> /* Handle favorite click */ },
-            onItemClick = { result -> /* Handle item click */ }
+            onItemClick = { result -> navigateToHome(result) }
         )
         favoriteAdapter = SearchResultsAdapter(
             onFavoriteClick = { result -> /* Handle favorite click */ },
-            onItemClick = { result -> /* Handle item click */ }
+            onItemClick = { result -> navigateToHome(result) }
         )
-        binding.searchResultsRecyclerView.adapter = searchAdapter
+        binding.searchResultsRecyclerView.apply {
+            adapter = searchAdapter
+            layoutManager = GridLayoutManager(context,2)
+        }
         setupSearchView()
         observeData()
 
+    }
+
+    private fun navigateToHome(result: LocationModel) {
+        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToHomeFragment(result))
     }
 
     private fun observeData() = with(searchViewModel) {

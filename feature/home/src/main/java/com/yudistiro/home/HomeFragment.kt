@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yudistiro.adapter.HourlyForecastAdapter
 import com.yudistiro.common.model.WeatherCondition
+import com.yudistiro.common.util.ZERO_DOUBLE
 import com.yudistiro.di.HomeComponentProvider
 import com.yudistiro.di.ViewModelFactory
 import com.yudistiro.domain.model.CurrentWeatherModel
@@ -39,7 +40,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private  var hourlyForecastAdapter: HourlyForecastAdapter = HourlyForecastAdapter()
-
+    private var lat : Double = -6.175247
+    private var lng : Double = 106.8270488
     override fun onAttach(context: Context) {
         super.onAttach(context)
          (requireContext().applicationContext as HomeComponentProvider)
@@ -57,8 +59,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(arguments?.containsKey("country") == true) {
+            val args = HomeFragmentArgs.fromBundle(arguments as Bundle)
+            args.country?.let {
+                lat = it.latitude
+                        lng = it.longitude
+            }
 
-        homeViewModel.fetchWeather(44.34, 10.99)
+        }
+
+        homeViewModel.fetchWeather(lat, lng)
 
         binding.hourlyForecastRecyclerView.apply {
             adapter = hourlyForecastAdapter
