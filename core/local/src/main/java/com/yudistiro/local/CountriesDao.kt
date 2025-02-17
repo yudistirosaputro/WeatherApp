@@ -15,6 +15,9 @@ interface CountriesDao {
     @Query("SELECT * FROM countries ORDER BY id DESC")
     fun getAllCountriesData(): Flow<List<CountriesEntity>>
 
-    @Query("DELETE FROM countries WHERE id = :id")
-    suspend fun deleteOldWeatherData(id: Int)
+    @Query("DELETE FROM countries WHERE cityName = :cityName")
+    suspend fun deleteOldWeatherData(cityName: String)
+
+    @Query("SELECT * FROM countries ORDER BY id DESC LIMIT :limit")
+    fun getLatestCountries(limit: Int): Flow<List<CountriesEntity>>
 }

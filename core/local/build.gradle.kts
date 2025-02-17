@@ -10,6 +10,7 @@ android {
 dependencies {
     api(libs.room.runtime)
     api(libs.room.ktx)
+    implementation(project(":core:common"))
     kapt(libs.room.compiler)
     implementation(libs.coroutines.android)
 }

@@ -13,5 +13,5 @@ data class LocationModel(
     val latitude: Double = ZERO_DOUBLE,
     val longitude: Double = ZERO_DOUBLE,
     val localName: String = EMPTY_STRING,
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 ) : Parcelable

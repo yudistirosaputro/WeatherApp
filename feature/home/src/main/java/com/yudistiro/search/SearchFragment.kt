@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import com.yudistiro.common.model.WeatherCondition
 import com.yudistiro.di.HomeComponentProvider
@@ -61,20 +63,36 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupWeatherUI(binding.clRoot, requireContext())
         searchAdapter = SearchResultsAdapter(
-            onFavoriteClick = { result -> /* Handle favorite click */ },
+            onFavoriteClick = { result ->  handleFavoriteClick(result)  },
             onItemClick = { result -> navigateToHome(result) }
         )
         favoriteAdapter = SearchResultsAdapter(
-            onFavoriteClick = { result -> /* Handle favorite click */ },
+            onFavoriteClick = { result -> handleFavoriteClick(result) },
             onItemClick = { result -> navigateToHome(result) }
         )
         binding.searchResultsRecyclerView.apply {
             adapter = searchAdapter
             layoutManager = GridLayoutManager(context,2)
         }
+        binding.favoritesRecyclerView.apply {
+            adapter = favoriteAdapter
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        }
+        searchViewModel.getSavedLocation()
         setupSearchView()
         observeData()
 
+    }
+
+    private fun handleFavoriteClick(location: LocationModel) = with(searchViewModel)  {
+        if (location.isFavorite) {
+            saveLocation(location)
+            Toast.makeText(requireContext(),"${location.cityName} added to favorite",Toast.LENGTH_SHORT).show()
+        } else {
+            deleteLocation(location)
+            Toast.makeText(requireContext(),"${location.cityName} removed from favorite",Toast.LENGTH_SHORT).show()
+        }
+        searchViewModel.getSavedLocation()
     }
 
     private fun navigateToHome(result: LocationModel) {
@@ -86,6 +104,16 @@ class SearchFragment : Fragment() {
             when {
                 it is DomainResource.Success -> {
                     searchAdapter.submitList(it.data)
+                }
+            }
+        }
+        savedLocations.observe(viewLifecycleOwner) {
+            when {
+                it is DomainResource.Success -> {
+                    favoriteAdapter.submitList(it.data)
+                }
+                it is DomainResource.Error -> {
+                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                 }
             }
         }

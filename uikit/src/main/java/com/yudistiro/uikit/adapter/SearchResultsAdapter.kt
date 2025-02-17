@@ -33,18 +33,26 @@ class SearchResultsAdapter(
         private val onItemClick: (LocationModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(location: LocationModel) {
+
             binding.apply {
+                favoriteIcon.setImageResource(
+                    if (location.isFavorite) R.drawable.ic_favorite_filled
+                    else R.drawable.ic_favorite_line
+                )
                 locationName.text = "${location.cityName } ${location.country}"
                 selectLocation.setOnClickListener {
                     onItemClick(location)
                 }
                 favoriteIcon.setOnClickListener {
+                    location.apply {
+                        isFavorite = !isFavorite
+                    }
+                    favoriteIcon.setImageResource(
+                        if (location.isFavorite) R.drawable.ic_favorite_filled
+                        else R.drawable.ic_favorite_line
+                    )
                     onFavoriteClick(location)
                 }
-                favoriteIcon.setImageResource(
-                    if (location.isFavorite) R.drawable.ic_favorite_filled
-                    else R.drawable.ic_favorite_line
-                )
             }
         }
     }
