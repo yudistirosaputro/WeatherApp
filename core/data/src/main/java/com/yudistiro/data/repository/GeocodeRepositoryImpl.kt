@@ -37,6 +37,7 @@ class GeocodeRepositoryImpl @Inject constructor(
                   state = it.state,
                   latitude = it.lat,
                   longitude = it.lng,
+                  isFavorite = true
               )
           }
           if(locationModel.isEmpty()) {

@@ -10,8 +10,6 @@ import com.yudistiro.domain.usecase.DeleteSavedLocationUseCase
 import com.yudistiro.domain.usecase.GetSavedLocationUseCase
 import com.yudistiro.domain.usecase.SaveLocationDataUseCase
 import com.yudistiro.domain.usecase.SearchLocationWeatherUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

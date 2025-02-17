@@ -35,6 +35,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 buildFeatures.buildConfig = true
                 dependencies {
                     add("testImplementation", kotlin("test"))
+                    add("testImplementation", libs.findLibrary("arch.core.testing").get())
                     add("testImplementation", libs.findBundle("mockk").get())
                 }
             }
