@@ -99,21 +99,64 @@ class SearchFragment : Fragment() {
         findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToHomeFragment(result))
     }
 
-    private fun observeData() = with(searchViewModel) {
-        searchResults.observe(viewLifecycleOwner) {
-            when {
-                it is DomainResource.Success -> {
+    private fun observeData() = with(binding) {
+        searchViewModel.searchResults.observe(viewLifecycleOwner) {
+            when(it) {
+                is DomainResource.Success -> {
+                    searchResultsRecyclerView.visibility = View.VISIBLE
+                    progressBarSearch.visibility = View.GONE
                     searchAdapter.submitList(it.data)
+                }
+
+                is DomainResource.Error ->  {
+                    searchResultsError.apply {
+                        visibility = View.VISIBLE
+                        text = it.message
+                    }
+                    searchResultsRecyclerView.visibility = View.GONE
+                    progressBarSearch.visibility = View.GONE
+                }
+                DomainResource.Loading -> {
+                    searchResultsError.visibility = View.GONE
+                    searchResultsRecyclerView.visibility = View.GONE
+                    progressBarSearch.visibility = View.VISIBLE
+                }
+                is DomainResource.SuccessNoData -> {
+                    searchResultsError.apply {
+                        visibility = View.VISIBLE
+                        text = it.message
+                    }
+                    searchResultsRecyclerView.visibility = View.GONE
+                    progressBarSearch.visibility = View.GONE
                 }
             }
         }
-        savedLocations.observe(viewLifecycleOwner) {
-            when {
-                it is DomainResource.Success -> {
+        searchViewModel.savedLocations.observe(viewLifecycleOwner) {
+            when (it) {
+                is DomainResource.Success -> {
                     favoriteAdapter.submitList(it.data)
                 }
-                it is DomainResource.Error -> {
-                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+
+                is DomainResource.Error ->  {
+                    favoriteResultsError.apply {
+                        visibility = View.VISIBLE
+                        text = it.message
+                    }
+                    favoritesRecyclerView.visibility = View.GONE
+                    progressBarFavorite.visibility = View.GONE
+                }
+                DomainResource.Loading -> {
+                    favoriteResultsError.visibility = View.GONE
+                    favoritesRecyclerView.visibility = View.GONE
+                    progressBarFavorite.visibility = View.VISIBLE
+                }
+                is DomainResource.SuccessNoData -> {
+                    favoriteResultsError.apply {
+                        visibility = View.VISIBLE
+                        text = it.message
+                    }
+                    favoritesRecyclerView.visibility = View.GONE
+                    progressBarFavorite.visibility = View.GONE
                 }
             }
         }

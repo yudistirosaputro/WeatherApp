@@ -16,4 +16,5 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.androidx.swiperefreshlayout)
 }

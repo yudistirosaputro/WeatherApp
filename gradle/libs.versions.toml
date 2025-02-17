@@ -34,6 +34,7 @@ gson = "2.10.1"
 mockk = "1.12.1"
 glide = "4.15.1"
 archCoreTest = "2.2.0"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -78,6 +79,7 @@ mockk-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 glide-android = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

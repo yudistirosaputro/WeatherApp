@@ -61,6 +61,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Favorites RecyclerView -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favoritesRecyclerView"
             android:layout_width="match_parent"
@@ -74,6 +75,28 @@
             app:layout_constraintTop_toBottomOf="@id/favoritesHeader"
             tools:itemCount="4"
             tools:listitem="@layout/item_search_location" />
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBarFavorite"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/searchResultsTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favoritesHeader"/>
+        <TextView
+            android:id="@+id/favoriteResultsError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            tools:text="Search Results"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/searchResultsTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/favoritesHeader"/>
 
         <!-- Search Results Section -->
         <TextView
@@ -87,7 +110,28 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/favoritesRecyclerView" />
-
+        <TextView
+            android:id="@+id/searchResultsError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            tools:text="Search Results"
+            android:textSize="36sp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchResultsTitle" />
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBarSearch"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchResultsTitle" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResultsRecyclerView"
             android:layout_width="match_parent"

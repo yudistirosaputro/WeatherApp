@@ -3,18 +3,18 @@ package com.yudistiro.home
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yudistiro.adapter.HourlyForecastAdapter
 import com.yudistiro.common.model.WeatherCondition
-import com.yudistiro.common.util.ZERO_DOUBLE
 import com.yudistiro.di.HomeComponentProvider
 import com.yudistiro.di.ViewModelFactory
 import com.yudistiro.domain.model.CurrentWeatherModel
@@ -24,10 +24,9 @@ import com.yudistiro.uikit.util.ThemeUtils.lightenColor
 import com.yudistiro.uikit.util.ThemeUtils.setCurrentWeatherCondition
 import com.yudistiro.uikit.util.ThemeUtils.updateStatusBarColor
 import com.yudistiro.weather.feature.home.R
-import com.yudistiro.weather.uikit.R as uikit
 import com.yudistiro.weather.feature.home.databinding.FragmentHomeBinding
-import java.util.Date
 import javax.inject.Inject
+import com.yudistiro.weather.uikit.R as uikit
 
 class HomeFragment : Fragment() {
 
@@ -39,14 +38,15 @@ class HomeFragment : Fragment() {
     }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private  var hourlyForecastAdapter: HourlyForecastAdapter = HourlyForecastAdapter()
-    private var lat : Double = -6.175247
-    private var lng : Double = 106.8270488
+    private var hourlyForecastAdapter: HourlyForecastAdapter = HourlyForecastAdapter()
+    private var lat: Double = -6.175247
+    private var lng: Double = 106.8270488
     override fun onAttach(context: Context) {
         super.onAttach(context)
-         (requireContext().applicationContext as HomeComponentProvider)
+        (requireContext().applicationContext as HomeComponentProvider)
             .provideHomeComponent().create().inject(this)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -59,37 +59,79 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(arguments?.containsKey("country") == true) {
+        if (arguments?.containsKey("country") == true) {
             val args = HomeFragmentArgs.fromBundle(arguments as Bundle)
             args.country?.let {
                 lat = it.latitude
-                        lng = it.longitude
+                lng = it.longitude
             }
 
         }
 
         homeViewModel.fetchWeather(lat, lng)
-
-        binding.hourlyForecastRecyclerView.apply {
-            adapter = hourlyForecastAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.apply {
+            hourlyForecastRecyclerView.apply {
+                adapter = hourlyForecastAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
+            searchButton.setOnClickListener {
+                findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+            }
+            swipeRefreshLayout.setOnRefreshListener {
+                homeViewModel.fetchWeather(lat, lng)
+            }
         }
+
         observeData()
-        binding.searchButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
-        }
-
     }
 
-    private fun observeData() = with(homeViewModel) {
-        weatherState.observe(viewLifecycleOwner) {
-            when {
-                it is DomainResource.Success -> {
+    private fun observeData() = with(binding) {
+        homeViewModel.weatherState.observe(viewLifecycleOwner) {
+            when (it) {
+                is DomainResource.Success -> {
+                    dateTime.visibility = View.VISIBLE
+                    temperatureText.visibility = View.VISIBLE
+                    iconWeather.visibility = View.VISIBLE
+                    weatherInfoCard.visibility = View.VISIBLE
+                    hourlyCardView.visibility = View.VISIBLE
                     setUpUIData(it.data)
+                    progressBarMain.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+                }
+
+                is DomainResource.Error -> {
+                    dateTime.visibility = View.GONE
+                    temperatureText.visibility = View.GONE
+                    iconWeather.visibility = View.GONE
+                    weatherInfoCard.visibility = View.GONE
+                    hourlyCardView.visibility = View.GONE
+                    progressBarMain.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+
+                is DomainResource.SuccessNoData -> {  dateTime.visibility = View.GONE
+                    temperatureText.visibility = View.GONE
+                    iconWeather.visibility = View.GONE
+                    weatherInfoCard.visibility = View.GONE
+                    hourlyCardView.visibility = View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+                    progressBarMain.visibility = View.GONE
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+
+                }
+
+                DomainResource.Loading -> {
+                    dateTime.visibility = View.GONE
+                    temperatureText.visibility = View.GONE
+                    iconWeather.visibility = View.GONE
+                    weatherInfoCard.visibility = View.GONE
+                    hourlyCardView.visibility = View.GONE
+                    progressBarMain.visibility = View.VISIBLE
                 }
             }
         }
-        forecastState.observe(viewLifecycleOwner) {
+        homeViewModel.forecastState.observe(viewLifecycleOwner) {
             when {
                 it is DomainResource.Success -> {
                     hourlyForecastAdapter.submitList(it.data)
@@ -112,17 +154,33 @@ class HomeFragment : Fragment() {
             windDescription.text = currentWeather.rainChance
         }
     }
-    private fun setupWeatherUI(layout : ConstraintLayout, context : Context,) {
+
+    private fun setupWeatherUI(layout: ConstraintLayout, context: Context) {
         // Update status bar color based on weather condition
         when (ThemeUtils.getCurrentWeatherCondition()) {
-            WeatherCondition.SUNNY -> updateColorWithWeather(layout, context,uikit.color.sunny_background)
-            WeatherCondition.CLOUDS -> updateColorWithWeather(layout, context,uikit.color.cloudy_background)
-            WeatherCondition.RAIN -> updateColorWithWeather(layout, context,uikit.color.rainy_background)
-            else -> updateColorWithWeather(layout, context,uikit.color.sunny_background)
+            WeatherCondition.SUNNY -> updateColorWithWeather(
+                layout,
+                context,
+                uikit.color.sunny_background
+            )
+
+            WeatherCondition.CLOUDS -> updateColorWithWeather(
+                layout,
+                context,
+                uikit.color.cloudy_background
+            )
+
+            WeatherCondition.RAIN -> updateColorWithWeather(
+                layout,
+                context,
+                uikit.color.rainy_background
+            )
+
+            else -> updateColorWithWeather(layout, context, uikit.color.sunny_background)
         }
     }
 
-    private fun updateColorWithWeather(layout : ConstraintLayout, context : Context, colorRes: Int) {
+    private fun updateColorWithWeather(layout: ConstraintLayout, context: Context, colorRes: Int) {
         val color = ContextCompat.getColor(context, colorRes)
         val gradient = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE

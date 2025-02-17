@@ -41,7 +41,7 @@ class GeocodeRepositoryImpl @Inject constructor(
               )
           }
           if(locationModel.isEmpty()) {
-              return@flow emit(DomainResource.SuccessNoData("NO daa"))
+              return@flow emit(DomainResource.SuccessNoData("No Data saved"))
           } else return@flow emit(DomainResource.Success(locationModel))
       } catch (e : Exception) {
           return@flow emit(DomainResource.Error(
